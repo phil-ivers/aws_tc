@@ -1,0 +1,7 @@
+Step 1: Place the timer.vX-X.py, settings.json, aws_logo_smile.gif and activies.json in a folder of your choice.
+Step 2: Edit the timer.sh to point to that folder (if you're on Windows, you'll want a *.bat file instead). Change permissions on the file so it's executable, if necessary.
+Step 3: If you don't have Python 3 installed on your machine, edit the timer.sh to call python instead of python3, or alternatively install Python 3. 
+	(For Windows, you'll need to install python if you don't already have it). Install Tkinter if necessary.
+Step 4: Launch the Timer program by calling the timer.sh (or timer.bat on windows) from the terminal. You will likely get an error saying the Activities file is missing - you can fix that in the next step.
+Step 5: Go to the Settings tab in the Timer program and create paths for the output files (files that OBS will read from), and where it can find the activities.json file.
+Step 6: Play around with it to make sure it works as expected.
