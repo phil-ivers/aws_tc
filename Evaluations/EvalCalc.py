@@ -5,7 +5,8 @@ with open(sys.argv[1], mode='r') as evalfile:
         reader = csv.reader(evalfile)
         ncols = len(next(reader)) + 1
         evalfile.seek(0)
-        mapval = {'strongly agree': 5, 'agree': 4, 'neutral': 3, 'disagree': 2, 'strongly disagree': 1}
+        mapval = {'strongly agree': 5, 'agree': 4, 'neutral': 3, 'disagree': 2, 'strongly disagree': 1,
+                    'extremely satisfied': 5, 'satisfied': 4, 'dissatisfied': 2, 'extremely dissatisfied': 1}
         column_sum = [0] * ncols
         divisor = [0] * ncols
         question = [None] * ncols
