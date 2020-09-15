@@ -36,7 +36,7 @@ with open(sys.argv[1], mode='r') as evalfile:
         for pos in range(ncols):
             val = divisor[pos]
             if val > 0:
-                print('%.2f' % float(column_sum[pos]/val), question[pos])
+                print('%.2f' % (float(column_sum[pos]) / float(val)), question[pos])
                 overall_div = overall_div + val
                 overall_sum = overall_sum + column_sum[pos]
                 if 'instructor' in question[pos]:
@@ -44,8 +44,8 @@ with open(sys.argv[1], mode='r') as evalfile:
                     instructor_sum = instructor_sum + column_sum[pos]
 
         print('')
-        print('%.2f' % float(instructor_sum/instructor_div), 'Instructor CSAT')
-        print('%.2f' % float(overall_sum/overall_div), 'Overall CSAT')
+        print('%.2f' % (float(instructor_sum) / float(instructor_div)), 'Instructor CSAT')
+        print('%.2f' % (float(overall_sum) / float(overall_div)), 'Overall CSAT')
         print('')
         print('Additional Feedback')
         print(feedback)
