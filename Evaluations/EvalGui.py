@@ -19,6 +19,7 @@ def process_file(filename):
             mapval = {'strongly agree': 5, 'agree': 4, 'neutral': 3, 'disagree': 2, 'strongly disagree': 1,
                       'extremely satisfied': 5, 'satisfied': 4, 'dissatisfied': 2, 'extremely dissatisfied': 1,
                       'very likely': 5, 'likely': 4, 'unlikely': 2, 'very unlikely': 1}
+            ignore_vals = ["No thanks","Yes, I'd like Amazon Web Services (AWS) to follow up with me"]
             column_sum = [0] * ncols
             divisor = [0] * ncols
             question = [None] * ncols
@@ -34,7 +35,7 @@ def process_file(filename):
                     if mapval.get(item.lower()):
                         column_sum[item_position] = column_sum[item_position] + mapval.get(item.lower())
                         divisor[item_position] = divisor[item_position] + 1
-                    elif item and row_position > 2:
+                    elif item and row_position > 2 and item not in ignore_vals:
                         feedback = feedback + ' - ' + item + '\n'
 
             item_position = 0
@@ -60,7 +61,7 @@ def process_file(filename):
             output += '%.2f' % (float(instructor_sum) / float(instructor_div)) + '\t' + 'Instructor CSAT' + '\n'
             output += '%.2f' % (float(overall_sum) / float(overall_div)) + '\t' + 'Overall CSAT' + '\n'
             output += '\n'
-            output += 'Additional Feedback' + '\n'
+            output += 'Recommended Changes' + '\n'
             output += '-------------------' + '\n'
             output += feedback
             results.delete("1.0", tk.END)
@@ -83,7 +84,7 @@ def copy_text():
 # set-up window
 global r, output
 r = tk.Tk()
-r.title('AWS T&C CSAT Evaluation v1.0')
+r.title('AWS T&C CSAT Evaluation v1.1')
 r.geometry("820x820")
 
 fileOpenPath = tk.Button(r, text='Choose a raw evaluation file',
