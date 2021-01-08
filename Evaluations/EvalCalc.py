@@ -8,6 +8,7 @@ with open(sys.argv[1], mode='r') as evalfile:
         mapval = {'strongly agree': 5, 'agree': 4, 'neutral': 3, 'disagree': 2, 'strongly disagree': 1,
                   'extremely satisfied': 5, 'satisfied': 4, 'dissatisfied': 2, 'extremely dissatisfied': 1,
                   'very likely': 5, 'likely': 4, 'unlikely': 2, 'very unlikely': 1}
+        ignore_vals = ["No thanks","Yes, I'd like Amazon Web Services (AWS) to follow up with me"]
         column_sum = [0] * ncols
         divisor = [0] * ncols
         question = [None] * ncols
@@ -23,7 +24,7 @@ with open(sys.argv[1], mode='r') as evalfile:
                 if mapval.get(item.lower()):
                     column_sum[item_position] = column_sum[item_position] + mapval.get(item.lower())
                     divisor[item_position] = divisor[item_position] + 1
-                elif item and row_position > 2:
+                elif item and row_position > 2 and item not in ignore_vals:
                     feedback = feedback + ' - ' + item + '\n'
 
         item_position = 0
@@ -47,5 +48,5 @@ with open(sys.argv[1], mode='r') as evalfile:
         print('%.2f' % (float(instructor_sum) / float(instructor_div)), 'Instructor CSAT')
         print('%.2f' % (float(overall_sum) / float(overall_div)), 'Overall CSAT')
         print('')
-        print('Additional Feedback')
+        print('Recommended Changes')
         print(feedback)
