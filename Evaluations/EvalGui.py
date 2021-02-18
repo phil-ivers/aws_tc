@@ -19,7 +19,7 @@ def process_file(filename):
             mapval = {'strongly agree': 5, 'agree': 4, 'neutral': 3, 'disagree': 2, 'strongly disagree': 1,
                       'extremely satisfied': 5, 'satisfied': 4, 'dissatisfied': 2, 'extremely dissatisfied': 1,
                       'very likely': 5, 'likely': 4, 'unlikely': 2, 'very unlikely': 1}
-            ignore_vals = ["No thanks", "Yes, I'd like Amazon Web Services (AWS) to follow up with me", "Promoter", "Passive"]
+            ignore_vals = ["No thanks", "Yes, I'd like Amazon Web Services (AWS) to follow up with me", "Promoter", "Passive", "Detractor"]
             column_sum = [0] * ncols
             divisor = [0] * ncols
             question = [None] * ncols
