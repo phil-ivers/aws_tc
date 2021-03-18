@@ -13,19 +13,31 @@ with open(sys.argv[1], mode='r') as evalfile:
         divisor = [0] * ncols
         question = [None] * ncols
         row_position = 0
-        feedback = ''
+        feedback_change = ''
+        feedback_like = ''
+        feedback_other = ''
         for row in reader:
             row_position = row_position + 1
             item_position = 0
             for item in row:
                 item_position = item_position + 1
+                consumed = 0
                 if row_position == 2:
                     question[item_position] = item.replace("\n", " ")
                 if mapval.get(item.lower()):
                     column_sum[item_position] = column_sum[item_position] + mapval.get(item.lower())
                     divisor[item_position] = divisor[item_position] + 1
-                elif item and row_position > 2 and item not in ignore_vals:
-                    feedback = feedback + ' - ' + item + '\n'
+                    consumed = 1
+                if item and row_position > 2 and question[
+                    item_position] == 'What would you recommend changing about this course?':
+                    feedback_change = feedback_change + ' - ' + item + '\n'
+                    consumed = 1
+                if item and row_position > 2 and question[
+                    item_position] == 'What did you like most about the course?':
+                    feedback_like = feedback_like + ' - ' + item + '\n'
+                    consumed = 1
+                elif consumed == 0 and item and row_position > 2 and item not in ignore_vals:
+                    feedback_other = feedback_other + ' - ' + item + '\n'
 
         item_position = 0
 
@@ -48,5 +60,17 @@ with open(sys.argv[1], mode='r') as evalfile:
         print('%.2f' % (float(instructor_sum) / float(instructor_div)), 'Instructor CSAT')
         print('%.2f' % (float(overall_sum) / float(overall_div)), 'Overall CSAT')
         print('')
-        print('Recommended Changes')
-        print(feedback)
+        output = ''
+        if feedback_change:
+            output += 'Recommended Changes' + '\n'
+            output += '-------------------' + '\n'
+            output += feedback_change + '\n'
+        if feedback_like:
+            output += 'What was Liked' + '\n'
+            output += '-------------------' + '\n'
+            output += feedback_like + '\n'
+        if feedback_other:
+            output += 'Other feedback' + '\n'
+            output += '-------------------' + '\n'
+            output += feedback_other + '\n'
+        print(output)
