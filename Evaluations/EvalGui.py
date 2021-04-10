@@ -65,11 +65,11 @@ def process_file(filename, show_adv_details=False):
                       'very likely': 5, 'likely': 4, 'unlikely': 2, 'very unlikely': 1}
             ignore_vals = ["No thanks", "Yes, I'd like Amazon Web Services (AWS) to follow up with me", "Promoter",
                            "Passive", "Detractor"]
-            adv_title = 'Avg\tMin\tMax\tStd Dev\tQuestion\n'
-            adv_output = '{average:.2f}\t{min:.2f}\t{max:.2f}\t{std_dev:.2f}\t{question}\n'
+            adv_title = 'Avg\tMin\tMax\tStdDev\tMode\tQuestion\n'
+            adv_output = '{average:.2f}\t{min:.0f}\t{max:.0f}\t{std_dev:.2f}\t{mode:.0f}\t{question}\n'
             std_title = 'Avg\tQuestion\n'
             std_output = '{average:.2f}\t{question}\n'
-            feedback_output = '\n\n{title}\n-------------------\n{feedback}'
+            feedback_output = '\n{title}\n-------------------\n{feedback}'
             feedback = {}
             total_rows = 0
             for row_position, row in enumerate(reader):
@@ -100,6 +100,7 @@ def process_file(filename, show_adv_details=False):
                                                     std_dev=statistics.stdev(responses),
                                                     min=min(responses),
                                                     max=max(responses),
+                                                    mode=statistics.mode(responses),
                                                     question=f.getQuestion())
                     if f.getQuestion().find("instructor") > 0:
                         instructor_csat["count"] += 1
@@ -107,10 +108,12 @@ def process_file(filename, show_adv_details=False):
                     overall_csat["count"] += 1
                     overall_csat["sum"] += statistics.mean(responses)
                 elif f.getQuestionId().find("TEXT") > 0:
-                    textarea_output += feedback_output.format(title=f.getQuestion(), feedback=f.responses_as_str())
+                    textarea_output += feedback_output.format(
+                        title=f.getQuestion(),
+                        feedback=f.responses_as_str())
             output += '\n'
-            output += '%.2f' % (float(instructor_csat.get("sum")) / float(instructor_csat.get("count"))) + '\t' + 'Instructor CSAT' + '\n'
-            output += '%.2f' % (float(overall_csat.get("sum")) / float(overall_csat.get("count"))) + '\t' + 'Overall CSAT' + '\n'
+            output += '{instructor_csat:.2f}\tInstructor CSAT\n'.format(instructor_csat=(instructor_csat.get("sum") / instructor_csat.get("count")))
+            output += '{overall_csat:.2f}\tOverall CSAT\n'.format(overall_csat=(overall_csat.get("sum") / overall_csat.get("count")))
             output += textarea_output
             results.delete("1.0", tk.END)
             results.insert(tk.END, output)
